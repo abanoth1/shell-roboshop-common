@@ -7,6 +7,8 @@ source ./common.sh
 
 check_root  # calling the check_root function to ensure the script is run as root user
 
+check_root  # calling the check_root function to ensure the script is run as root user
+
 dnf module disable redis -y &>> $LOGS_FILE # disabling the default redis module
 VALIDATE $? "Disabling Redis Module"
 

@@ -4,6 +4,8 @@
 # AND THIS SCRIPT CONTAINS COMMON VARIABLES AND FUNCTIONS USED ACROSS MULTIPLE SCRIPTS 
 
 source ./common.sh
+check_root  # calling the check_root function to ensure the script is run as root user.
+
 app_name=catalogue  # Created a app_name variable to hold the application name
 
 app_setup  # calling the app_setup function to setup the application directory
