@@ -62,6 +62,14 @@ app_setup(){
     mkdir -p /app
     VALIDATE $? "Creating Application Directory"
 
+        id roboshop &>> $LOGS_FILE 
+        if [ $? -ne 0 ]; then
+            useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $LOGS_FILE
+            VALIDATE $? "creating system user"
+        else
+            echo -e "roboshop user is already present .... $Y skipped $N"
+        fi
+
     curl -o /tmp/$app_name.zip https://roboshop-artifacts.s3.amazonaws.com/$app_name-v3.zip &>> $LOGS_FILE
     VALIDATE $? "Downloading $app_name App Content"
 
