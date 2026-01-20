@@ -25,4 +25,4 @@ else
 fi
 
 app_restart  # calling the app_restart function to restart the application service
-print_total_time_taken  # calling the print_total_time function to print the total time taken for script execution
+print_total_time  # calling the print_total_time function to print the total time taken for script execution
