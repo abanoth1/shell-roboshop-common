@@ -66,6 +66,15 @@ java_setup(){
     VALIDATE $? "Renaming $app_name Application Jar File"
 }
 
+python_setup(){
+    dnf install python36 gcc python3-devel -y &>> $LOGS_FILE
+    VALIDATE $? "Installing Python3 and Dependencies"
+
+    pip3 install -r requirements.txt &>> $LOGS_FILE
+    VALIDATE $? "Installing Python3 Dependencies"
+   
+}
+
 app_setup(){
     mkdir -p /app
     VALIDATE $? "Creating Application Directory"
