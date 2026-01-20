@@ -15,6 +15,7 @@ N='\e[0m'  # NO COLOR
 LOGS_FOLDER="/var/log/shell-roboshop"
 SCRIPT_NAME=$( echo $0 | cut -d "." -f1 )
 LOGS_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
+MONGODB_HOST="mongodb.daws86s.me"
 START_TIME=$(date +%s)  # to capture script start time
 # log file path /var/log/shell-roboshop/16-logs.log
 
@@ -40,6 +41,54 @@ VALIDATE() {
         # addingn colors to the output
         # adding loops to install multiple packages
     fi
+}
+
+node_js_setup(){  # function to setup NodeJS repository
+    dnf module disable nodejs -y &>> $LOGS_FILE
+    VALIDATE $? "Disabling Nodejs Module"
+
+    dnf module enable nodejs:20 -y &>> $LOGS_FILE
+    VALIDATE $? "Enabling Nodejs:20"
+
+    dnf install nodejs -y &>> $LOGS_FILE
+    VALIDATE $? " Installing Nodejs"
+
+    npm install &>> $LOGS_FILE
+    VALIDATE $? "Installing Nodejs Dependencies"
+}
+
+app_setup(){
+    mkdir -p /app
+    VALIDATE $? "Creating Application Directory"
+
+    curl -o /tmp/$app_name.zip https://roboshop-artifacts.s3.amazonaws.com/$app_name-v3.zip &>> $LOGS_FILE
+    VALIDATE $? "Downloading $app_name App Content"
+
+    cd /app
+    VALIDATE $? "Changing Directory to /app"
+
+    rm -rf /app/* # remove old content if any
+    VALIDATE $? "Removing Old Content"
+
+    unzip /tmp/$app_name.zip &>> $LOGS_FILE
+    VALIDATE $? "Extracting $app_name App Content"
+    # Removed hardcoded application name and replaced with variable called app_name
+}
+
+systemd_setup(){  # function to setup systemd service
+    cp $SCRIPT_DIR/$app_name.service /etc/systemd/system/$app_name.service &>> $LOGS_FILE
+    VALIDATE $? "Copying $app_name service file"
+
+    systemctl daemon-reload &>> $LOGS_FILE
+    VALIDATE $? "Reloading systemd daemon"
+
+    systemctl enable $app_name &>> $LOGS_FILE
+    VALIDATE $? "Enabling $app_name service"
+}
+
+app_restart(){
+    systemctl restart $app_name &>> $LOGS_FILE
+    VALIDATE $? "Restarting $app_name service"
 }
 
 print_total_time() {  # function to print total time taken to execute the script
