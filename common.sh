@@ -17,6 +17,7 @@ SCRIPT_NAME=$( echo $0 | cut -d "." -f1 )
 LOGS_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 SCRIPT_DIR=$PWD
 MONGODB_HOST="mongodb.daws86s.me"
+MYSQL_HOST="mysql.daws86s.me"
 START_TIME=$(date +%s)  # to capture script start time
 # log file path /var/log/shell-roboshop/16-logs.log
 
