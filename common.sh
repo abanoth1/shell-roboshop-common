@@ -57,6 +57,14 @@ node_js_setup(){  # function to setup NodeJS repository
     npm install &>> $LOGS_FILE
     VALIDATE $? "Installing Nodejs Dependencies"
 }
+java_setup(){
+    dnf install maven -y &>> $LOGS_FILE
+    VALIDATE $? "Installing Maven"
+    mvn clean package &>> $LOGS_FILE
+    VALIDATE $? "Building $app_name Application"
+    mv target/$app_name-1.0.jar $app_name.jar &>> $LOGS_FILE
+    VALIDATE $? "Renaming $app_name Application Jar File"
+}
 
 app_setup(){
     mkdir -p /app
